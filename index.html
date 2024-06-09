@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Slice of Heaven Pizza - Order Your Pizza</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to Slice of Heaven Pizza</h1>
+        <p>Order your favorite pizza now and taste the heavenly flavor!</p>
+        <img src="pizza.jpg" alt="Pizza">
+    </header>
+
+    <main>
+        <form id="pizza-order-form">
+            <fieldset class="highlight">
+                <legend>Personal Information</legend>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </fieldset>
+
+            <fieldset class="highlight">
+                <legend>Choose Your Pizza</legend>
+                <label for="num-pizzas">Number of Pizzas:</label>
+                <input type="number" id="num-pizzas" name="num-pizzas" min="1" required>
+
+                <label for="size">Size (Number of Slices):</label>
+                <select id="size" name="size">
+                    <option value="small">Small (6 slices) - $8.00</option>
+                    <option value="medium">Medium (8 slices) - $10.00</option>
+                    <option value="large">Large (10 slices) - $12.00</option>
+                    <option value="x-large">X-Large (12 slices) - $14.00</option>
+                </select>
+
+                <label for="crust">Crust:</label>
+                <input type="radio" id="thin-crust" name="crust" value="thin" checked>
+                <label for="thin-crust">Thin Crust</label>
+                <input type="radio" id="thick-crust" name="crust" value="thick">
+                <label for="thick-crust">Thick Crust</label>
+                <input type="radio" id="deep-dish" name="crust" value="deep-dish">
+                <label for="deep-dish">Deep Dish</label>
+
+                <label for="shape">Shape:</label>
+                <select id="shape" name="shape">
+                    <option value="round">Round</option>
+                    <option value="square">Square</option>
+                </select>
+
+                <label for="toppings">Toppings:</label>
+                <input type="checkbox" id="pepperoni" name="toppings" value="pepperoni">
+                <label for="pepperoni">Pepperoni - $1.50</label>
+                <input type="checkbox" id="mushrooms" name="toppings" value="mushrooms">
+                <label for="mushrooms">Mushrooms - $1.50</label>
+                <input type="checkbox" id="onions" name="toppings" value="onions">
+                <label for="onions">Onions - $1.50</label>
+                <input type="checkbox" id="sausage" name="toppings" value="sausage">
+                <label for="sausage">Sausage - $1.50</label>
+                <input type="checkbox" id="bacon" name="toppings" value="bacon">
+                <label for="bacon">Bacon - $1.50</label>
+                <input type="checkbox" id="extra-cheese" name="toppings" value="extra-cheese">
+                <label for="extra-cheese">Extra Cheese - $1.50</label>
+                <input type="checkbox" id="black-olives" name="toppings" value="black-olives">
+                <label for="black-olives">Black Olives - $1.50</label>
+                <input type="checkbox" id="green-peppers" name="toppings" value="green-peppers">
+                <label for="green-peppers">Green Peppers - $1.50</label>
+                <input type="checkbox" id="pineapple" name="toppings" value="pineapple">
+                <label for="pineapple">Pineapple - $1.50</label>
+                <input type="checkbox" id="spinach" name="toppings" value="spinach">
+                <label for="spinach">Spinach - $1.50</label>
+            </fieldset>
+
+            <fieldset class="highlight">
+                <legend>Delivery Option</legend>
+                <input type="radio" id="pickup" name="delivery-option" value="pickup" checked>
+                <label for="pickup">Pickup</label>
+                <input type="radio" id="delivery" name="delivery-option" value="delivery">
+                <label for="delivery">Delivery - $5.00</label>
+                <input type="radio" id="eat-in" name="delivery-option" value="eat-in">
+                <label for="eat-in">Eat In</label>
+            </fieldset>
+
+            <div class="form-actions">
+                <input type="submit" value="Place Order">
+                <input type="reset" value="Reset Form">
+            </div>
+        </form>
+        <div class="total-price">
+            Total: $<span id="total-price">0.00</span>
+        </div>
+    </main>
+
+    <footer>
+        <p>Location: 12 Bloor Street near Georgian@ILAC</p>
+        <p>Phone Number: 438-776-5667</p>
+        <p>&copy; 2024 Slice of Heaven Pizza</p>
+    </footer>
+
+    <div id="popup-container" class="popup-container">
+        <div id="popup" class="popup">
+            <h2>Order Confirmed!</h2>
+            <p>Thank you for your order. Your delicious pizza will be ready soon!</p>
+            <button id="close-popup">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for confirmation message
+        const form = document.getElementById('pizza-order-form');
+        const popupContainer = document.getElementById('popup-container');
+        const closePopupBtn = document.getElementById('close-popup');
+        const totalPriceSpan = document.getElementById('total-price');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            popupContainer.style.display = 'block';
+
+            // Calculate total price
+            const numPizzas = parseInt(document.getElementById('num-pizzas').value);
+            const size = document.getElementById('size').value;
+            const toppings = document.querySelectorAll('input[name="toppings"]:checked').length;
+            const deliveryOption = document.querySelector('input[name="delivery-option"]:checked').value;
+            const sizePrices = { 'small': 8.00, 'medium': 10.00, 'large': 12.00, 'x-large': 14.00 };
+            const toppingPrice = 1.50;
+            const deliveryPrice = deliveryOption === 'delivery' ? 5.00 : 0.00;
+            const total = (sizePrices[size] + toppings * toppingPrice) * numPizzas + deliveryPrice;
+
+            totalPriceSpan.textContent = total.toFixed(2);
+        });
+
+        closePopupBtn.addEventListener('click', function() {
+            // Hide popup when close button is clicked
+            popupContainer.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
